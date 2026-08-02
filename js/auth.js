@@ -31,6 +31,24 @@ const toast = document.getElementById("toast");
 const toastMessage = document.getElementById("toast-message");
 
 /* ======================================
+   LOGOUT TOAST
+   ====================================== */
+
+const pendingToastMessage = sessionStorage.getItem("toastMessage");
+const pendingToastType = sessionStorage.getItem("toastType");
+
+window.addEventListener("load", () => {
+  if (!pendingToastMessage) {
+    return;
+  }
+
+  showToast(pendingToastMessage, pendingToastType || "success");
+
+  sessionStorage.removeItem("toastMessage");
+  sessionStorage.removeItem("toastType");
+});
+
+/* ======================================
    STATE
    ====================================== */
 
@@ -112,7 +130,7 @@ function showLoading() {
   authMessage.textContent = "Checking employee...";
 
   authMessage.classList.remove("error");
-
+  /*  */
   authMessage.classList.add("loading");
 }
 
@@ -320,37 +338,23 @@ employeeNoInput.addEventListener("input", () => {
 authForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  if (!currentStatus) {
-    return;
-  }
+  const employeeNo = employeeNoInput.value.trim();
+  const password = passwordInput.value;
 
-  /* ==================================
-       LOGIN
-       ================================== */
+  try {
+    const response = await login(employeeNo, password);
 
-  if (currentStatus === "LOGIN") {
-    console.log("LOGIN");
+    localStorage.setItem("access_token", response.data.access_token);
 
-    /*
-     * Login API akan kita sambungkan
-     * pada tahap berikutnya.
-     */
+    localStorage.setItem("refresh_token", response.data.refresh_token);
 
-    return;
-  }
+    sessionStorage.setItem("toastMessage", "Login Success");
+    sessionStorage.setItem("toastType", "success");
 
-  /* ==================================
-       REGISTER
-       ================================== */
+    window.location.href = "./pages/application.html";
+  } catch (error) {
+    console.error(error);
 
-  if (currentStatus === "REGISTER") {
-    console.log("REGISTER");
-
-    /*
-     * Register API akan kita sambungkan
-     * pada tahap berikutnya.
-     */
-
-    return;
+    alert(error.message || "Login failed");
   }
 });

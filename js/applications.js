@@ -1,13 +1,4 @@
 /* ======================================
-   DUMMY USER
-   ====================================== */
-
-const currentUser = {
-  name: "Ikhwan Sulestra",
-  role: "User",
-};
-
-/* ======================================
    ELEMENTS
    ====================================== */
 
@@ -20,6 +11,30 @@ const userAvatar = document.getElementById("user-avatar");
 const themeToggle = document.getElementById("theme-toggle");
 
 const copyrightYear = document.getElementById("copyright-year");
+
+const logoutButton = document.getElementById("logout-button");
+
+const toast = document.getElementById("toast");
+
+const toastMessage = document.getElementById("toast-message");
+
+/* ======================================
+   LOGIN TOAST
+   ====================================== */
+
+const pendingToastMessage = sessionStorage.getItem("toastMessage");
+const pendingToastType = sessionStorage.getItem("toastType");
+
+window.addEventListener("load", () => {
+  if (!pendingToastMessage) {
+    return;
+  }
+
+  showToast(pendingToastMessage, pendingToastType || "success");
+
+  sessionStorage.removeItem("toastMessage");
+  sessionStorage.removeItem("toastType");
+});
 
 /* ======================================
    USER DISPLAY
@@ -95,6 +110,36 @@ themeToggle.addEventListener("click", () => {
 });
 
 /* ======================================
+   TOAST
+   ====================================== */
+
+function showToast(message, type = "success") {
+  toast.classList.remove("success", "warning", "error");
+
+  toastMessage.textContent = message;
+
+  toast.classList.add(type);
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
+}
+
+/* ======================================
+   LOGOUT
+   ====================================== */
+
+logoutButton.addEventListener("click", () => {
+  logout();
+
+  sessionStorage.setItem("toastMessage", "Logout Success");
+  sessionStorage.setItem("toastType", "success");
+
+  window.location.href = "../index.html";
+});
+
+/* ======================================
    COPYRIGHT
    ====================================== */
 
@@ -104,4 +149,44 @@ copyrightYear.textContent = new Date().getFullYear();
    INIT
    ====================================== */
 
-displayUser(currentUser);
+async function initApplication() {
+  const token = getAccessToken();
+
+  if (!token) {
+    sessionStorage.setItem(
+      "toastMessage",
+      "You're not login, please login first",
+    );
+    sessionStorage.setItem("toastType", "error");
+
+    window.location.href = "../index.html";
+    return;
+  }
+
+  try {
+    const payload = decodeToken(token);
+
+    const employeeNo = payload.emp;
+
+    const response = await checkEmployee(employeeNo);
+
+    const employee = response.data.employee;
+
+    displayUser({
+      name: employee.name,
+      role: employee.position,
+    });
+  } catch (error) {
+    console.error("Failed to load user:", error);
+
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+
+    sessionStorage.setItem("toastMessage", "Youre not login");
+    sessionStorage.setItem("toastType", "error");
+
+    window.location.href = "../index.html";
+  }
+}
+
+initApplication();

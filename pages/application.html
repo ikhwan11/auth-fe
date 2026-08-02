@@ -15,6 +15,9 @@
   </head>
 
   <body>
+    <div id="toast" class="toast">
+      <span id="toast-message"></span>
+    </div>
     <!-- ==============================
          TOPBAR
          ============================== -->
@@ -38,6 +41,16 @@
           aria-label="Toggle theme"
         >
           <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <button
+          type="button"
+          id="logout-button"
+          class="icon-btn"
+          aria-label="Logout"
+          title="Logout"
+        >
+          <i class="fa-solid fa-right-from-bracket"></i>
         </button>
 
         <!-- Divider -->
@@ -192,6 +205,7 @@
          SCRIPT
          ============================== -->
 
+    <script src="../js/api.js"></script>
     <script src="../js/applications.js"></script>
   </body>
 </html>
