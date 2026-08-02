@@ -1,31 +1,62 @@
+/* ======================================
+   ELEMENTS
+   ====================================== */
+
 const authForm = document.getElementById("auth-form");
 
 const employeeNoInput = document.getElementById("employee-no");
 
 const employeeInfo = document.getElementById("employee-info");
+
 const employeeName = document.getElementById("employee-name");
+
 const employeePosition = document.getElementById("employee-position");
 
 const passwordSection = document.getElementById("password-section");
+
 const confirmPasswordSection = document.getElementById(
   "confirm-password-section",
 );
 
 const passwordInput = document.getElementById("password");
+
 const confirmPasswordInput = document.getElementById("confirm-password");
 
 const authMessage = document.getElementById("auth-message");
+
 const authButton = document.getElementById("auth-button");
 
 const toast = document.getElementById("toast");
+
 const toastMessage = document.getElementById("toast-message");
 
+/* ======================================
+   STATE
+   ====================================== */
+
 let debounceTimer = null;
+
 let requestController = null;
+
 let currentStatus = null;
+
 let toastTimer = null;
 
-// TOAST
+/* ======================================
+   ANIMATION HELPERS
+   ====================================== */
+
+function showElement(element) {
+  element.classList.add("show");
+}
+
+function hideElement(element) {
+  element.classList.remove("show");
+}
+
+/* ======================================
+   TOAST
+   ====================================== */
 
 function showToast(message, type) {
   clearTimeout(toastTimer);
@@ -35,6 +66,7 @@ function showToast(message, type) {
   toastMessage.textContent = message;
 
   toast.classList.add(type);
+
   toast.classList.add("show");
 
   toastTimer = setTimeout(() => {
@@ -42,51 +74,64 @@ function showToast(message, type) {
   }, 3000);
 }
 
-// RESET UI
+/* ======================================
+   RESET AUTH UI
+   ====================================== */
 
 function resetAuthUI() {
   currentStatus = null;
 
-  employeeInfo.classList.add("hidden");
+  hideElement(employeeInfo);
 
-  passwordSection.classList.add("hidden");
-  confirmPasswordSection.classList.add("hidden");
+  hideElement(passwordSection);
 
-  authButton.classList.add("hidden");
+  hideElement(confirmPasswordSection);
+
+  hideElement(authButton);
 
   employeeName.textContent = "";
+
   employeePosition.textContent = "";
 
   passwordInput.value = "";
+
   confirmPasswordInput.value = "";
 
   passwordInput.required = false;
+
   confirmPasswordInput.required = false;
 
   authMessage.textContent = "";
 }
 
-// LOADING
+/* ======================================
+   LOADING
+   ====================================== */
 
 function showLoading() {
   authMessage.textContent = "Checking employee...";
+
   authMessage.classList.remove("error");
+
   authMessage.classList.add("loading");
 }
 
-// CHECK EMPLOYEE
+/* ======================================
+   CHECK EMPLOYEE
+   ====================================== */
 
 async function handleEmployeeCheck() {
   const employeeNo = employeeNoInput.value.trim();
 
-  // EMPTY
+  /* Empty */
 
   if (!employeeNo) {
     resetAuthUI();
+
     return;
   }
 
-  // CANCEL PREVIOUS REQUEST
+  /* Cancel previous request */
 
   if (requestController) {
     requestController.abort();
@@ -99,6 +144,11 @@ async function handleEmployeeCheck() {
   try {
     const response = await checkEmployee(employeeNo);
 
+    /*
+     * Make sure response belongs
+     * to current employee number.
+     */
+
     if (employeeNo !== employeeNoInput.value.trim()) {
       return;
     }
@@ -107,53 +157,60 @@ async function handleEmployeeCheck() {
 
     currentStatus = data.status;
 
-    // EMPLOYEE FOUND
+    /* ==================================
+       EMPLOYEE FOUND
+       ================================== */
 
     if (data.employee) {
       employeeName.textContent = data.employee.name;
+
       employeePosition.textContent = data.employee.position;
 
-      employeeInfo.classList.remove("hidden");
+      showElement(employeeInfo);
     }
 
-    // LOGIN
-    // Employee TRUE
-    // User TRUE
+    /* ==================================
+       LOGIN
+       ================================== */
 
     if (data.status === "LOGIN") {
-      passwordSection.classList.remove("hidden");
+      showElement(passwordSection);
 
-      confirmPasswordSection.classList.add("hidden");
+      hideElement(confirmPasswordSection);
 
       passwordInput.required = true;
+
       confirmPasswordInput.required = false;
 
       authButton.textContent = "LOGIN";
-      authButton.classList.remove("hidden");
+
+      showElement(authButton);
 
       authMessage.textContent = "";
 
-      showToast("Employee and User found, please login", "success");
+      showToast("Employee and User valid, please login", "success");
 
       passwordInput.focus();
 
       return;
     }
 
-    // REGISTER
-    // Employee TRUE
-    // User FALSE
+    /* ==================================
+       REGISTER
+       ================================== */
 
     if (data.status === "REGISTER") {
-      passwordSection.classList.remove("hidden");
+      showElement(passwordSection);
 
-      confirmPasswordSection.classList.remove("hidden");
+      showElement(confirmPasswordSection);
 
       passwordInput.required = true;
+
       confirmPasswordInput.required = true;
 
       authButton.textContent = "CREATE ACCOUNT";
-      authButton.classList.remove("hidden");
+
+      showElement(authButton);
 
       authMessage.textContent = "";
 
@@ -167,18 +224,46 @@ async function handleEmployeeCheck() {
       return;
     }
 
-    // NOT FOUND
-    // Employee FALSE
-    // User FALSE
+    /* ==================================
+       NOT FOUND
+       ================================== */
 
     if (data.status === "NOT_FOUND") {
-      resetAuthUI();
+      hideElement(employeeInfo);
+
+      hideElement(passwordSection);
+
+      hideElement(confirmPasswordSection);
+
+      hideElement(authButton);
+
+      currentStatus = null;
+
+      employeeName.textContent = "";
+
+      employeePosition.textContent = "";
+
+      passwordInput.value = "";
+
+      confirmPasswordInput.value = "";
+
+      passwordInput.required = false;
+
+      confirmPasswordInput.required = false;
+
+      authMessage.textContent = "";
 
       showToast("Employee Not Found", "error");
 
       return;
     }
   } catch (error) {
+    /*
+     * AbortError means the previous
+     * request was cancelled because
+     * user typed another number.
+     */
+
     if (error.name === "AbortError") {
       return;
     }
@@ -191,25 +276,46 @@ async function handleEmployeeCheck() {
   }
 }
 
-// REALTIME EMPLOYEE INPUT
+/* ======================================
+   REALTIME EMPLOYEE INPUT
+   ====================================== */
 
 employeeNoInput.addEventListener("input", () => {
   const employeeNo = employeeNoInput.value.trim();
 
+  /*
+   * Immediately hide previous
+   * authentication form.
+   */
+
   resetAuthUI();
+
+  /*
+   * Empty input
+   */
 
   if (!employeeNo) {
     return;
   }
 
+  /*
+   * Clear previous debounce
+   */
+
   clearTimeout(debounceTimer);
+
+  /*
+   * Wait 400ms before request
+   */
 
   debounceTimer = setTimeout(() => {
     handleEmployeeCheck();
   }, 400);
 });
 
-// FORM SUBMIT
+/* ======================================
+   FORM SUBMIT
+   ====================================== */
 
 authForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -218,20 +324,32 @@ authForm.addEventListener("submit", async (event) => {
     return;
   }
 
-  // LOGIN
+  /* ==================================
+       LOGIN
+       ================================== */
+
   if (currentStatus === "LOGIN") {
     console.log("LOGIN");
 
-    // Endpoint login akan kita sambungkan berikutnya
+    /*
+     * Login API akan kita sambungkan
+     * pada tahap berikutnya.
+     */
 
     return;
   }
 
-  // REGISTER
+  /* ==================================
+       REGISTER
+       ================================== */
+
   if (currentStatus === "REGISTER") {
     console.log("REGISTER");
 
-    // Endpoint register akan kita sambungkan berikutnya
+    /*
+     * Register API akan kita sambungkan
+     * pada tahap berikutnya.
+     */
 
     return;
   }

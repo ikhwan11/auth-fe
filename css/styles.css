@@ -1,81 +1,106 @@
+/* ======================================
+   RESET
+   ====================================== */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* ======================================
+   THEME VARIABLES
+   ====================================== */
+
 :root {
   --bg-color: #ffffff;
   --text-color: #2b2b2b;
-  --input-text: #333333;
-  --border-color: #dddddd;
+  --input-color: #333333;
   --placeholder-color: #b5b5b5;
-  --accent-color: #7cb342;
+  --border-color: #dddddd;
+  --primary-color: #7cb342;
+  --primary-hover: #6ba139;
   --footer-color: #999999;
 }
 
-html.dark-mode {
+/* ======================================
+   DARK MODE
+   ====================================== */
+
+[data-theme="dark"] {
   --bg-color: #181818;
-  --text-color: #f5f5f5;
-  --input-text: #ffffff;
+  --text-color: #f1f1f1;
+  --input-color: #eeeeee;
+  --placeholder-color: #777777;
   --border-color: #444444;
-  --placeholder-color: #888888;
-  --footer-color: #999999;
+  --primary-color: #8bc34a;
+  --primary-hover: #7cb342;
+  --footer-color: #888888;
 }
 
-/* Theme toggle */
-.theme-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-
-  width: 42px;
-  height: 42px;
-
-  border: 1px solid var(--border-color);
-  border-radius: 50%;
-
-  background-color: var(--bg-color);
-  color: var(--text-color);
-
-  cursor: pointer;
-  font-size: 18px;
-
-  transition: all 0.3s ease;
-}
+/* ======================================
+   BODY
+   ====================================== */
 
 body {
   font-family: "Segoe UI", Arial, sans-serif;
+
   min-height: 100vh;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   background-color: var(--bg-color);
   color: var(--text-color);
+
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
 }
 
+/* ======================================
+   LOGIN CONTAINER
+   ====================================== */
+
 .login-container {
   width: 100%;
   max-width: 340px;
+
   padding: 40px 20px;
+
   text-align: center;
 }
+
+/* ======================================
+   WELCOME TEXT
+   ====================================== */
 
 .welcome-text {
   font-size: 30px;
   font-weight: 700;
+
   color: var(--text-color);
+
   line-height: 1.3;
+
   margin-bottom: 50px;
+
+  transition: color 0.3s ease;
 }
+
+/* ======================================
+   LOGIN FORM
+   ====================================== */
 
 .login-form {
   display: flex;
   flex-direction: column;
 }
+
+/* ======================================
+   INPUT
+   ====================================== */
 
 .input-group {
   margin-bottom: 25px;
@@ -83,14 +108,23 @@ body {
 
 .input-group input {
   width: 100%;
+
   border: none;
   border-bottom: 1px solid var(--border-color);
+
   padding: 8px 4px;
+
   font-size: 14px;
-  color: var(--input-text);
+
+  color: var(--input-color);
+
   outline: none;
+
   background: transparent;
-  transition: border-color 0.2s ease;
+
+  transition:
+    border-color 0.2s ease,
+    color 0.3s ease;
 }
 
 .input-group input::placeholder {
@@ -98,87 +132,183 @@ body {
 }
 
 .input-group input:focus {
-  border-bottom: 1px solid var(--accent-color);
+  border-bottom-color: var(--primary-color);
 }
 
-.login-btn {
-  margin-top: 15px;
-  padding: 14px;
-  border: none;
-  border-radius: 30px;
-  background-color: var(--accent-color);
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.login-btn:hover {
-  background-color: #105b14;
-}
-
-.login-footer {
-  margin-top: 40px;
-  font-size: 12px;
-  color: var(--footer-color);
-}
-
-.login-footer p {
-  margin-bottom: 6px;
-}
-
-.login-footer a {
-  color: var(--accent-color);
-  text-decoration: none;
-}
-
-.login-footer a:hover {
-  text-decoration: underline;
-}
-
-/* Form styles */
-
-.hidden {
-  display: none !important;
-}
+/* ======================================
+   EMPLOYEE INFO
+   ====================================== */
 
 .employee-info {
-  margin-bottom: 25px;
+  max-height: 0;
+
+  opacity: 0;
+
+  overflow: hidden;
+
+  transform: translateY(-10px);
+
+  margin-bottom: 0;
+
   text-align: left;
+
+  transition:
+    max-height 0.4s ease,
+    opacity 0.3s ease,
+    transform 0.4s ease,
+    margin-bottom 0.4s ease;
+}
+
+.employee-info.show {
+  max-height: 100px;
+
+  opacity: 1;
+
+  transform: translateY(0);
+
+  margin-bottom: 25px;
 }
 
 .employee-info p {
   margin-bottom: 4px;
+
   color: var(--text-color);
+
   font-size: 15px;
+
   font-weight: 600;
 }
 
 .employee-info span {
   color: var(--footer-color);
+
   font-size: 12px;
 }
+
+/* ======================================
+   FORM SECTION
+   ====================================== */
+
+.form-section {
+  max-height: 0;
+
+  opacity: 0;
+
+  overflow: hidden;
+
+  transform: translateY(-10px);
+
+  transition:
+    max-height 0.4s ease,
+    opacity 0.3s ease,
+    transform 0.4s ease;
+}
+
+.form-section.show {
+  max-height: 100px;
+
+  opacity: 1;
+
+  transform: translateY(0);
+}
+
+/* ======================================
+   AUTH MESSAGE
+   ====================================== */
 
 .auth-message {
   min-height: 18px;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  font-size: 12px;
-}
 
-.auth-message.error {
-  color: #d9534f;
+  margin-top: 5px;
+  margin-bottom: 5px;
+
+  font-size: 12px;
+
+  transition:
+    opacity 0.3s ease,
+    color 0.3s ease;
 }
 
 .auth-message.loading {
   color: var(--footer-color);
 }
 
-/* Toast Notification */
+.auth-message.error {
+  color: #f44336;
+}
+
+/* ======================================
+   LOGIN BUTTON
+   ====================================== */
+
+.login-btn {
+  width: 100%;
+
+  margin-top: 15px;
+
+  padding: 14px;
+
+  border: none;
+
+  border-radius: 30px;
+
+  background-color: var(--primary-color);
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+
+  opacity: 0;
+
+  transform: translateY(-10px);
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.3s ease,
+    transform 0.4s ease,
+    background-color 0.2s ease;
+}
+
+.login-btn.show {
+  opacity: 1;
+
+  transform: translateY(0);
+
+  pointer-events: auto;
+}
+
+.login-btn:hover {
+  background-color: var(--primary-hover);
+}
+
+/* ======================================
+   LOGIN FOOTER
+   ====================================== */
+
+.login-footer {
+  margin-top: 40px;
+
+  font-size: 12px;
+
+  color: var(--footer-color);
+
+  transition: color 0.3s ease;
+}
+
+/* ======================================
+   TOAST
+   ====================================== */
+
 .toast {
   position: fixed;
+
   top: 25px;
   right: 25px;
 
@@ -190,30 +320,36 @@ body {
   border-radius: 10px;
 
   color: #ffffff;
+
   font-size: 13px;
+
   line-height: 1.4;
 
   opacity: 0;
+
   visibility: hidden;
 
   transform: translateX(30px);
+
+  z-index: 9999;
+
+  backdrop-filter: blur(10px);
+
+  -webkit-backdrop-filter: blur(10px);
 
   transition:
     opacity 0.3s ease,
     transform 0.3s ease,
     visibility 0.3s ease;
-
-  z-index: 9999;
-
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
-/* Toast muncul */
+/* Toast visible */
 
 .toast.show {
   opacity: 1;
+
   visibility: visible;
+
   transform: translateX(0);
 }
 
@@ -233,4 +369,64 @@ body {
 
 .toast.error {
   background-color: rgba(244, 67, 54, 0.85);
+}
+
+/* ======================================
+   THEME TOGGLE
+   ====================================== */
+
+.theme-toggle {
+  position: fixed;
+
+  top: 20px;
+  left: 20px;
+
+  width: 40px;
+  height: 40px;
+
+  border: 1px solid var(--border-color);
+
+  border-radius: 50%;
+
+  background-color: transparent;
+
+  color: var(--text-color);
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background-color: var(--border-color);
+}
+
+/* ======================================
+   MOBILE
+   ====================================== */
+
+@media screen and (max-width: 480px) {
+  .login-container {
+    max-width: 100%;
+
+    padding: 30px 25px;
+  }
+
+  .welcome-text {
+    font-size: 26px;
+
+    margin-bottom: 40px;
+  }
+
+  .toast {
+    top: 15px;
+    right: 15px;
+    left: 15px;
+
+    min-width: auto;
+    max-width: none;
+  }
 }
