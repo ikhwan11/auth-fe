@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Applications - Wans Portal</title>
+
+    <link rel="stylesheet" href="../css/applications.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- ==============================
+         TOPBAR
+         ============================== -->
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="brand">
+          <div class="brand-mark">W</div>
+
+          <span class="brand-name"> Wans Portal </span>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <!-- Theme -->
+
+        <button
+          type="button"
+          id="theme-toggle"
+          class="icon-btn"
+          aria-label="Toggle theme"
+        >
+          <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- Divider -->
+
+        <div class="divider"></div>
+
+        <!-- User -->
+
+        <div class="user-profile">
+          <div class="user-info">
+            <span id="user-name" class="user-name"> Ikhwan Sulestra </span>
+
+            <span id="user-role" class="user-role"> User </span>
+          </div>
+
+          <div id="user-avatar" class="avatar">IS</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ==============================
+         MAIN
+         ============================== -->
+
+    <main class="applications-container">
+      <section class="applications-header">
+        <div>
+          <h1>Applications</h1>
+
+          <p>Select an application to continue.</p>
+        </div>
+      </section>
+
+      <!-- ==============================
+           APPLICATION GRID
+           ============================== -->
+
+      <section class="app-grid">
+        <!-- App -->
+
+        <a class="app-card" href="#" style="--c1: #ffb84d; --c2: #ff7a3d">
+          <div class="app-icon">
+            <i class="fa-solid fa-calendar-check"></i>
+          </div>
+
+          <div class="app-content">
+            <span class="app-label"> Appointments </span>
+
+            <span class="app-description"> Manage appointments </span>
+          </div>
+        </a>
+
+        <!-- App -->
+
+        <a class="app-card" href="#" style="--c1: #ff6ec7; --c2: #c93fd0">
+          <div class="app-icon">
+            <i class="fa-solid fa-chart-pie"></i>
+          </div>
+
+          <div class="app-content">
+            <span class="app-label"> CRM </span>
+
+            <span class="app-description"> Customer management </span>
+          </div>
+        </a>
+
+        <!-- App -->
+
+        <a class="app-card" href="#" style="--c1: #ffb347; --c2: #ff7a3d">
+          <div class="app-icon">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+
+          <div class="app-content">
+            <span class="app-label"> Sales </span>
+
+            <span class="app-description"> Sales management </span>
+          </div>
+        </a>
+
+        <!-- App -->
+
+        <a class="app-card" href="#" style="--c1: #ffd166; --c2: #ff9a3d">
+          <div class="app-icon">
+            <i class="fa-solid fa-key"></i>
+          </div>
+
+          <div class="app-content">
+            <span class="app-label"> Rental </span>
+
+            <span class="app-description"> Rental management </span>
+          </div>
+        </a>
+
+        <!-- App -->
+
+        <a class="app-card" href="#" style="--c1: #ff5e5e; --c2: #d63f6a">
+          <div class="app-icon">
+            <i class="fa-solid fa-cash-register"></i>
+          </div>
+
+          <div class="app-content">
+            <span class="app-label"> Point of Sale </span>
+
+            <span class="app-description"> Manage transactions </span>
+          </div>
+        </a>
+
+        <!-- App -->
+
+        <a class="app-card" href="#" style="--c1: #6ec66e; --c2: #2f9c4d">
+          <div class="app-icon">
+            <i class="fa-solid fa-percent"></i>
+          </div>
+
+          <div class="app-content">
+            <span class="app-label"> Accounting </span>
+
+            <span class="app-description"> Financial management </span>
+          </div>
+        </a>
+
+        <!-- App -->
+
+        <a class="app-card" href="#" style="--c1: #6ec6ff; --c2: #2f5fd0">
+          <div class="app-icon">
+            <i class="fa-solid fa-diagram-project"></i>
+          </div>
+
+          <div class="app-content">
+            <span class="app-label"> Project </span>
+
+            <span class="app-description"> Project management </span>
+          </div>
+        </a>
+      </section>
+    </main>
+
+    <!-- ==============================
+         FOOTER
+         ============================== -->
+
+    <footer class="footer">
+      <p>
+        Copyright ©
+        <span id="copyright-year"></span>
+        Ikhwan Sulestra
+      </p>
+    </footer>
+
+    <!-- ==============================
+         SCRIPT
+         ============================== -->
+
+    <script src="../js/applications.js"></script>
+  </body>
+</html>
