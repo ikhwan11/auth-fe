@@ -56,3 +56,27 @@ function logout() {
   localStorage.removeItem("access_token");
   localStorage.removeItem("refresh_token");
 }
+
+/* REGISTER */
+
+async function register(employeeNo, password, confirmPassword) {
+  const response = await fetch(`${API_BASE_URL}/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      employee_no: employeeNo,
+      password: password,
+      confirm_password: confirmPassword,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Registration failed");
+  }
+
+  return data;
+}

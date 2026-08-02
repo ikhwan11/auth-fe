@@ -30,6 +30,12 @@ const toast = document.getElementById("toast");
 
 const toastMessage = document.getElementById("toast-message");
 
+const togglePassword = document.getElementById("toggle-password");
+
+const toggleConfirmPassword = document.getElementById(
+  "toggle-confirm-password",
+);
+
 /* ======================================
    LOGOUT TOAST
    ====================================== */
@@ -340,21 +346,51 @@ authForm.addEventListener("submit", async (event) => {
 
   const employeeNo = employeeNoInput.value.trim();
   const password = passwordInput.value;
+  const confirmPassword = confirmPasswordInput.value;
 
-  try {
-    const response = await login(employeeNo, password);
+  if (currentStatus === "LOGIN") {
+    try {
+      const response = await login(employeeNo, password);
 
-    localStorage.setItem("access_token", response.data.access_token);
+      localStorage.setItem("access_token", response.data.access_token);
 
-    localStorage.setItem("refresh_token", response.data.refresh_token);
+      localStorage.setItem("refresh_token", response.data.refresh_token);
 
-    sessionStorage.setItem("toastMessage", "Login Success");
-    sessionStorage.setItem("toastType", "success");
+      window.location.href = "./pages/application.html";
+    } catch (error) {
+      console.error(error);
 
-    window.location.href = "./pages/application.html";
-  } catch (error) {
-    console.error(error);
+      showToast(error.message || "Login failed", "error");
+    }
 
-    alert(error.message || "Login failed");
+    return;
+  }
+
+  if (currentStatus === "REGISTER") {
+    if (password !== confirmPassword) {
+      showToast("Password and Confirm Password do not match", "error");
+
+      return;
+    }
+
+    try {
+      const response = await register(employeeNo, password, confirmPassword);
+
+      localStorage.setItem("access_token", response.data.access_token);
+
+      localStorage.setItem("refresh_token", response.data.refresh_token);
+
+      showToast("Registration successful", "success");
+
+      setTimeout(() => {
+        window.location.href = "./pages/application.html";
+      }, 1000);
+    } catch (error) {
+      console.error(error);
+
+      showToast(error.message || "Registration failed", "error");
+    }
+
+    return;
   }
 });
