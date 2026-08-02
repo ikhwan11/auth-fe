@@ -7,6 +7,10 @@
     <title>Login - Wans Portal</title>
 
     <link rel="stylesheet" href="css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
   </head>
 
   <body>
@@ -69,26 +73,42 @@
         <!-- Password -->
 
         <div id="password-section" class="form-section">
-          <div class="input-group">
+          <div class="input-group password-input">
             <input
               type="password"
               id="password"
               placeholder="Password"
               autocomplete="current-password"
             />
+            <button
+              type="button"
+              id="password-toggle"
+              class="password-toggle"
+              aria-label="Show password"
+            >
+              <i class="fa-solid fa-eye"></i>
+            </button>
           </div>
         </div>
 
         <!-- Confirm Password -->
 
         <div id="confirm-password-section" class="form-section">
-          <div class="input-group">
+          <div class="input-group password-input">
             <input
               type="password"
               id="confirm-password"
               placeholder="Confirm Password"
               autocomplete="new-password"
             />
+            <button
+              type="button"
+              id="confirm-password-toggle"
+              class="password-toggle"
+              aria-label="Show confirm password"
+            >
+              <i class="fa-solid fa-eye"></i>
+            </button>
           </div>
         </div>
 

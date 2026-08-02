@@ -22,6 +22,12 @@ const passwordInput = document.getElementById("password");
 
 const confirmPasswordInput = document.getElementById("confirm-password");
 
+const passwordToggle = document.getElementById("password-toggle");
+
+const confirmPasswordToggle = document.getElementById(
+  "confirm-password-toggle",
+);
+
 const authMessage = document.getElementById("auth-message");
 
 const authButton = document.getElementById("auth-button");
@@ -97,6 +103,28 @@ function showToast(message, type) {
     toast.classList.remove("show");
   }, 3000);
 }
+
+function togglePasswordVisibility(input, button) {
+  const reveal = input.type === "password";
+  const icon = button.querySelector("i");
+
+  input.type = reveal ? "text" : "password";
+
+  if (icon) {
+    icon.classList.toggle("fa-eye");
+    icon.classList.toggle("fa-eye-slash");
+  }
+
+  button.setAttribute("aria-label", reveal ? "Hide password" : "Show password");
+}
+
+passwordToggle.addEventListener("click", () => {
+  togglePasswordVisibility(passwordInput, passwordToggle);
+});
+
+confirmPasswordToggle.addEventListener("click", () => {
+  togglePasswordVisibility(confirmPasswordInput, confirmPasswordToggle);
+});
 
 /* ======================================
    RESET AUTH UI
